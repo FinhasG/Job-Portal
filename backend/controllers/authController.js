@@ -2,8 +2,9 @@ const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const userSchema = require("../models/user_model");
+const {errorHandler}=require('../utils/error')
 
-const Signup = async (req, res) => {
+const Signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const schema = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
@@ -31,31 +32,27 @@ const Signup = async (req, res) => {
         await user.save();
         res.status(200).json("successfully registered");
       } catch (error) {
-        res.json("registration failed");
+        next(error);
       }
       //redirect('/login')
     }
   } catch (error) {
-    res.json("error");
+    next(error);
   }
 };
 
-const Signin= async(req,res)=>{
+const Signin= async(req, res, next)=>{
   const {email,password}=req.body;
   try {
     const user=await userSchema.findOne({email});
-    if(!user){
-      res.json("user not found")
-    }
+    if(!user) return next(errorHandler(404,"User not found"))
     const isMatch= await bcrypt.compare(password, user.password);
-    if(!isMatch){
-      res.json("Wrong credentials")
-    }
+    if(!isMatch) return next(errorHandler(404,"Wrong credentials"))
     const token=jwt.sign({id:user._id},process.env.JWT_SECRET);
     const {password:pass, ...info}=user._doc;
     res.cookie("token",token,{httpOnly:true}).status(200).json(info)
   } catch (error) {
-    res.json("error")
+    next(error)
   }
 }
 
