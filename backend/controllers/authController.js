@@ -34,7 +34,6 @@ const Signup = async (req, res, next) => {
       } catch (error) {
         next(error);
       }
-      //redirect('/login')
     }
   } catch (error) {
     next(error);
@@ -45,15 +44,15 @@ const Signin= async(req, res, next)=>{
   const {email,password}=req.body;
   try {
     const user=await userSchema.findOne({email});
-    if(!user) return next(errorHandler(404,"User not found"))
+    if(!user) return next(errorHandler(404,"User not found"));
     const isMatch= await bcrypt.compare(password, user.password);
     if(!isMatch) return next(errorHandler(404,"Wrong credentials"))
     const token=jwt.sign({id:user._id},process.env.JWT_SECRET);
     const {password:pass, ...info}=user._doc;
-    res.cookie("token",token,{httpOnly:true}).status(200).json(info)
+    res.cookie("token",token,{httpOnly:true}).status(200).json(info);
   } catch (error) {
-    next(error)
+    next(error);
   }
 }
 
-module.exports={Signup,Signin}
+module.exports={Signup,Signin};
