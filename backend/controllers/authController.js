@@ -5,9 +5,14 @@ const userSchema = require("../models/user_model");
 const {errorHandler}=require('../utils/error')
 
 const Signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { firstname,lastname, email, password } = req.body;
   const schema = Joi.object({
-    username: Joi.string().alphanum().min(3).max(30).required(),
+    firstname: Joi.string().alphanum().min(3).max(30).required(),
+    lastname: Joi.string()
+        .alphanum()
+        .min(3)
+        .max(30)
+        .required(),
 
     email: Joi.string().email({
       minDomainSegments: 2,
@@ -24,7 +29,8 @@ const Signup = async (req, res, next) => {
       res.status(400).json(validateResults.error );
     } else {
       const user = new userSchema({
-        username: username,
+        firstname:firstname,
+        lastname: lastname,
         email: email,
         password: await bcrypt.hash(password, 10),
       });
