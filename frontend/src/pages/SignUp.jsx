@@ -38,7 +38,7 @@ const SignUp = () => {
 
   return (
     <div className="p-4 max-w-lg mx-auto my-4">
-      <h1 className="text-3xl text-center font-semibold my-8">Sign Up</h1>
+      <h1 className="text-3xl text-center font-semibold my-8">Create a new account</h1>
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
         <input
           type="text"
@@ -68,12 +68,12 @@ const SignUp = () => {
           className="p-3 border rounded-xl outline-none"
           onChange={handleChange}
         />
-        <button className="bg-slate-500 p-2 text-white text-center rounded-lg hover:opacity-70 uppercase">Sign Up</button>
+        <button className="bg-slate-600 p-2 text-white text-center rounded-lg hover:opacity-70 uppercase">Sign Up</button>
       </form>
       <div className="flex gap-3 mt-2 ml-2">
         <h1>Already have an account ?</h1>
         <Link to={'/sign-in'}>
-          <span className="text-slate-700">Login</span>
+          <span className="text-slate-700">Sign In</span>
           </Link>
       </div>
     </div>
