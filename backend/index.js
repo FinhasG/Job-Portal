@@ -3,8 +3,10 @@ const connectDB = require('./database/db');
 const app = express();
 require('dotenv').config();
 const authRoute=require('./routes/authRoute')
+const passport = require('passport');
 
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use('/api/auth',authRoute)
 
